@@ -1,24 +1,43 @@
-def label = "mypod-${UUID.randomUUID().toString()}"
-podTemplate(label: label, yaml: """
-apiVersion: v1
-kind: Pod
-metadata:
-  labels:
-    some-label: some-label-value
-spec:
-  containers:
-  - name: busybox
-    image: busybox
-    command:
-    - cat
-    tty: true
-"""
-) {
+def label = "worker-${UUID.randomUUID().toString()}"
+
+podTemplate(label: label, containers: [
+  containerTemplate(name: 'docker', image: 'docker', command: 'cat', ttyEnabled: true)
+],
+volumes: [
+//   hostPathVolume(mountPath: '/home/gradle/.gradle', hostPath: '/tmp/jenkins/.gradle'),
+  hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock')
+]) {
   node(label) {
-    stage('Run specific shell') {
-      container(name:'busybox', shell:'/bin/sh') {
-        sh 'echo hello world'
+    def myRepo = checkout scm
+    def gitCommit = myRepo.GIT_COMMIT
+    def gitBranch = myRepo.GIT_BRANCH
+    def shortGitCommit = "${gitCommit[0..10]}"
+    def previousGitCommit = sh(script: "git rev-parse ${gitCommit}~", returnStdout: true)
+
+    sh "git-crypt unlock $GITCRYPT_KEY"
+
+    stage('Test') {
+      try {
+        sh "./test.sh"
+      }
+      catch (exc) {
+        println "Failed to test - ${currentBuild.fullDisplayName}"
+        throw(exc)
       }
     }
+    // stage('Create Docker images') {
+    //   container('docker') {
+    //     withCredentials([[$class: 'UsernamePasswordMultiBinding',
+    //       credentialsId: 'dockerhub',
+    //       usernameVariable: 'DOCKER_HUB_USER',
+    //       passwordVariable: 'DOCKER_HUB_PASSWORD']]) {
+    //       sh """
+    //         docker login -u ${DOCKER_HUB_USER} -p ${DOCKER_HUB_PASSWORD}
+    //         docker build -t namespace/my-image:${gitCommit} .
+    //         docker push namespace/my-image:${gitCommit}
+    //         """
+    //     }
+    //   }
+    // }
   }
 }
