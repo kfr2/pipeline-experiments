@@ -14,9 +14,11 @@ spec:
     tty: true
 """
 ) {
-    node (label) {
-      container('busybox') {
-        sh "hostname"
+  node(label) {
+    stage('Run specific shell') {
+      container(name:'busybox', shell:'/bin/sh') {
+        sh 'echo hello world'
       }
     }
+  }
 }
