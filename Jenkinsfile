@@ -14,7 +14,9 @@ volumes: [
     def shortGitCommit = "${gitCommit[0..10]}"
     def previousGitCommit = sh(script: "git rev-parse ${gitCommit}~", returnStdout: true)
 
-    sh "git-crypt unlock $GITCRYPT_KEY"
+    withCredentials([file(credentialsId: 'GITCRYPT_KEY', variable: 'GITCRYPT_KEY')]) {
+        sh "git-crypt unlock $GITCRYPT_KEY"
+    }
 
     stage('Test') {
       try {
