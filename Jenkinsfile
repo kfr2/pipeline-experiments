@@ -1,9 +1,7 @@
-env.LABEL="docker-${UUID.randomUUID().toString()}"
-
 pipeline {
     agent {
         kubernetes {
-            label "${env.LABEL}"
+            label 'pipeline-test-build-pod'
             defaultContainer 'jnlp'
             yamlFile 'KubernetesPod.yaml'
         }
