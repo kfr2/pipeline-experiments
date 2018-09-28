@@ -9,12 +9,6 @@ pipeline {
     }
 
     stages {
-        stage('Checkout repository') {
-            steps {
-                checkout scm
-            }
-        }
-
         stage('Decrypt secrets') {
             steps {
                 withCredentials([file(credentialsId: 'GITCRYPT_KEY', variable: 'GITCRYPT_KEY')]) {
