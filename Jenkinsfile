@@ -39,5 +39,11 @@ spec:
         sh "docker build -t ${image} ."
       }
     }
+
+    stage('Run tests') {
+      container('docker') {
+        sh "docker run --rm ${image} /srv/test.sh"
+      }
+    }
   }
 }
