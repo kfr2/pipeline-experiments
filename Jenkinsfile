@@ -45,5 +45,15 @@ spec:
         sh "docker run --rm ${image} /srv/test.sh"
       }
     }
+
+    stage('Push image') {
+        // Yep
+    }
+
+    stage('Prune image') {
+        container('docker') {
+            sh "docker rmi ${image}"
+        }
+    }
   }
 }
