@@ -1,17 +1,8 @@
 pipeline {
   agent any
 
-  stages {
-    stage("Decrypt secrets") {
-      steps {
-        withCredentials([file(credentialsId: 'GITCRYPT_KEY', variable: 'GITCRYPT_KEY')]) {
-          sh "git-crypt unlock $GITCRYPT_KEY"
-        }
-      }
-    }
-
-    def label = "docker-${UUID.randomUUID().toString()}"
-    podTemplate(label: label, yaml: """
+  def label = "docker-${UUID.randomUUID().toString()}"
+  podTemplate(label: label, yaml: """
 apiVersion: v1
 kind: Pod
 spec:
@@ -28,15 +19,24 @@ spec:
     hostPath:
       path: /var/run/docker.sock
 """
-  ) {
-    def image = "kfr2/pipeline-experiments"
-    node(label) {
-      stage('Build Docker image') {
-        container('docker') {
-          sh "docker build -t ${image} ."
+  ){
+    stages {
+      stage("Decrypt secrets") {
+        steps {
+          withCredentials([file(credentialsId: 'GITCRYPT_KEY', variable: 'GITCRYPT_KEY')]) {
+            sh "git-crypt unlock $GITCRYPT_KEY"
+          }
+        }
+      }
+
+      def image = "kfr2/pipeline-experiments"
+      node(label) {
+        stage('Build Docker image') {
+          container('docker') {
+            sh "docker build -t ${image} ."
+          }
         }
       }
     }
   }
-}
 }
