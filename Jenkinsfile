@@ -4,6 +4,9 @@ apiVersion: v1
 kind: Pod
 spec:
   containers:
+  - name: jnlp
+    image: quay.io/lightside/jenkins-jnlp-agent:0.1.0
+    args: ['\$(JENKINS_SECRET)', '\$(JENKINS_NAME)']
   - name: docker
     image: docker:1.11
     command: ['cat']
