@@ -50,10 +50,30 @@ spec:
         // Yep
     }
 
-    stage('Prune image') {
-        container('docker') {
-            sh "docker rmi ${image}"
+    // stage('Prune image') {
+    //     container('docker') {
+    //         sh "docker rmi ${image}"
+    //     }
+    // }
+  }
+}
+
+def label2 = "docker-${UUID.randomUUID().toString()}"
+podTemplate(label: label2, yaml: """
+apiVersion: v1
+kind: Pod
+spec:
+  containers:
+  - name: pipeline-test
+    image: kfr2/pipeline-experiments
+    command: ['cat']
+    tty: true
+""") {
+    node(label2) {
+        stage("Run tests in container") {
+            container("pipeline-test") {
+                sh "/srv/test.sh"
+            }
         }
     }
-  }
 }
