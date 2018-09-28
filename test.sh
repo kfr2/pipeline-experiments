@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 if cmp -s unencrypted.txt encrypted.txt; then
     echo "The files are the same!"
     exit 0
