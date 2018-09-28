@@ -1,5 +1,5 @@
-node {
-  stages {
+stages {
+  node {
     stage("checkout repo") {
       checkout scm
     }
