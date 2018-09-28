@@ -8,7 +8,7 @@ spec:
     image: quay.io/lightside/jenkins-jnlp-agent:0.1.0
     args: ['\$(JENKINS_SECRET)', '\$(JENKINS_NAME)']
   - name: docker
-    image: docker:1.11
+    image: docker:stable-dind
     command: ['cat']
     tty: true
     volumeMounts:
