@@ -1,3 +1,5 @@
+def image='kfr2/pipeline-experiments'
+
 pipeline {
     agent {
         kubernetes {
