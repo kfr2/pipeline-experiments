@@ -2,7 +2,6 @@ pipeline {
     agent {
         kubernetes {
             label 'pipeline-test-build-pod'
-            defaultContainer 'jnlp'
             yamlFile 'KubernetesPod.yaml'
         }
     }
