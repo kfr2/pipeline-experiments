@@ -34,12 +34,15 @@ pipeline {
         }
 
         stage('Push image') {
+            when {
+                branch 'master'
+            }
             steps {
                 sh "echo Push the image"
             }
         }
 
-        stage('Prune image') {
+        stage('Remove image') {
             steps {
                 container('docker') {
                     sh "docker rmi ${image}"
