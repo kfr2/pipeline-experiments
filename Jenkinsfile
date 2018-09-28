@@ -1,9 +1,9 @@
-def label = "docker-${UUID.randomUUID().toString()}"
+env.LABEL="docker-${UUID.randomUUID().toString()}"
 
 pipeline {
     agent {
         kubernetes {
-            label "${label}"
+            label "${env.LABEL}"
             defaultContainer 'jnlp'
             yamlFile 'KubernetesPod.yaml'
         }
@@ -41,7 +41,9 @@ pipeline {
         }
 
         stage('Push image') {
-            // Yep
+            steps {
+                sh "echo Push the image"
+            }
         }
 
         stage('Prune image') {
