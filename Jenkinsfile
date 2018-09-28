@@ -1,4 +1,4 @@
-def image = "kfr2/pipeline-experiments"
+def label = "docker-${UUID.randomUUID().toString()}"
 podTemplate(label: label, yaml: """
 apiVersion: v1
 kind: Pod
@@ -17,6 +17,8 @@ spec:
       path: /var/run/docker.sock
 """
   ) {
+
+  def image = "kfr2/pipeline-experiments"
 
   node(label) {
     stage('Checkout repository') {
