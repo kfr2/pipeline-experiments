@@ -6,7 +6,6 @@ spec:
   containers:
   - name: jnlp
     image: quay.io/lightside/jenkins-jnlp-agent:0.1.0
-    privileged: true
   - name: docker
     image: quay.io/lightside/jet:0.1.0
     command: ['cat']
@@ -16,8 +15,7 @@ spec:
       mountPath: /var/run/docker.sock
     securityContext:
       runAsUser: 0
-      allowPrivilegeEscalation: true
-    privileged: true
+      privileged: true
   volumes:
   - name: dockersock
     hostPath:
