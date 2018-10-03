@@ -13,6 +13,7 @@ spec:
       mountPath: /var/run/docker.sock
     securityContext:
       allowPrivilegeEscalation: true
+    privileged: true
   volumes:
   - name: dockersock
     hostPath:
