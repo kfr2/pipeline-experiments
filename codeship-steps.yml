@@ -1,4 +1,3 @@
 - name: test
-  tag: master
   service: app
   command: /srv/test.sh
