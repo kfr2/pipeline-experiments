@@ -5,7 +5,7 @@ spec:
   - name: jnlp
     image: quay.io/lightside/jenkins-jnlp-agent:0.1.0
   - name: docker
-    image: docker:stable-dind
+    image: quay.io/lightside/jet:0.1.0
     command: ['cat']
     tty: true
     volumeMounts:

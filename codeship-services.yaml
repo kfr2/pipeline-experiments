@@ -1,0 +1,4 @@
+app:
+  build: .
+  environment:
+    ENV: my-var
