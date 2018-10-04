@@ -6,9 +6,12 @@ spec:
   containers:
   - name: jnlp
     image: quay.io/lightside/jenkins-jnlp-agent:0.1.0
+    tty: true
+    securityContext:
+      runAsUser: 10000
+      allowPrivilegeEscalation: false
   - name: docker
     image: quay.io/lightside/jet:0.1.0
-    command: ['cat']
     tty: true
     volumeMounts:
     - name: dockersock
