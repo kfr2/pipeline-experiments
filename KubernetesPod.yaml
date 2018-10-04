@@ -13,13 +13,6 @@ spec:
   - name: docker
     image: quay.io/lightside/jet:0.1.0
     tty: true
-    volumeMounts:
-    - name: dockersock
-      mountPath: /var/run/docker.sock
     securityContext:
       runAsUser: 0
       privileged: true
-  volumes:
-  - name: dockersock
-    hostPath:
-      path: /var/run/docker.sock
