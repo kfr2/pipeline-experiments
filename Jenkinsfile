@@ -18,6 +18,10 @@ pipeline {
         }
 
         stage('Run jet') {
+            environment {
+                CI_BRANCH = 'fake'
+                CI_COMMITTER_USERNAME = 'also-fake'
+            }
             steps {
                 container('docker') {
                     sh "jet steps"
