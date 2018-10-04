@@ -1,5 +1,9 @@
 def label = "worker-${UUID.randomUUID().toString()}"
 
+def myRepo = checkout scm
+def gitCommit = myRepo.GIT_COMMIT
+def gitBranch = myRepo.GIT_BRANCH
+
 podTemplate(label: label, containers: [
   containerTemplate(
     name: 'jnlp',
@@ -12,7 +16,7 @@ podTemplate(label: label, containers: [
     ttyEnabled: true,
     privileged: true,
     envVars: [
-        envVar(key: 'CI_BRANCH', value: 'hardcoded'),
+        envVar(key: 'CI_BRANCH', value: gitBranch),
     ]
   )
 ]) {
