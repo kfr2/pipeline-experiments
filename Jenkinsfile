@@ -8,7 +8,7 @@ podTemplate(label: label, containers: [
   ),
   containerTemplate(
     name: 'docker',
-    image: 'quay.io/lightside/jet:0.2.1',
+    image: 'quay.io/lightside/jet:0.2.2',
     ttyEnabled: true,
     privileged: true,
     envVars: [
