@@ -31,13 +31,17 @@ podTemplate(label: label, containers: [
 
     stage('Describe environment') {
       container('docker') {
-        sh "env"
+        stage('Run env') {
+          sh "env"
+        }
       }
     }
 
     stage('Test') {
       container('docker') {
-        sh "/srv/test.sh"
+        stage('Run test script') {
+          sh "/srv/test.sh"
+        }
       }
     }
     // stage('Create Docker images') {
