@@ -1,9 +1,5 @@
 def label = "worker-${UUID.randomUUID().toString()}"
 
-def myRepo = checkout scm
-def gitCommit = myRepo.GIT_COMMIT
-def gitBranch = myRepo.GIT_BRANCH
-
 podTemplate(label: label, containers: [
   containerTemplate(
     name: 'jnlp',
@@ -12,16 +8,20 @@ podTemplate(label: label, containers: [
   ),
   containerTemplate(
     name: 'docker',
-    image: 'quay.io/lightside/jet:0.1.0',
+    image: 'quay.io/lightside/jet:0.2.0',
     ttyEnabled: true,
     privileged: true,
     envVars: [
-        envVar(key: 'CI_BRANCH', value: gitBranch),
+        // envVar(key: 'CI_BRANCH', value: gitBranch),
     ]
   )
 ]) {
   node(label) {
-    checkout scm
+    def myRepo = checkout scm
+    def gitCommit = myRepo.GIT_COMMIT
+    def gitBranch = myRepo.GIT_BRANCH
+    def shortGitCommit = "${gitCommit[0..10]}"
+    def previousGitCommit = sh(script: "git rev-parse ${gitCommit}~", returnStdout: true)
 
     stage('Decrypt secrets') {
       withCredentials([file(credentialsId: 'GITCRYPT_KEY', variable: 'GITCRYPT_KEY')]) {
@@ -37,7 +37,7 @@ podTemplate(label: label, containers: [
 
     stage('Test') {
       container('docker') {
-        sh "jet steps"
+        sh "/srv/run-jet.sh"
       }
     }
     // stage('Create Docker images') {
