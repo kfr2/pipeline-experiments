@@ -1,3 +1,7 @@
 - name: test
   service: app
   command: /srv/test.sh
+
+- name: master
+  service: app
+  command: env
