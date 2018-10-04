@@ -1,4 +1,7 @@
+redis:
+  image: redis:3.2-alpine
+
 app:
   build: .
-  environment:
-    ENV: my-var
+  links:
+    - redis
