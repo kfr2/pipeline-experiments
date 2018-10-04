@@ -2,6 +2,7 @@
   service: app
   command: /srv/test.sh
 
-- name: master
+- name: welcome
+  tag: run-in-jet
   service: app
-  command: env
+  command: echo "Welcome to run-in-jet!"
