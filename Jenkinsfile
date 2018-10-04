@@ -8,11 +8,6 @@ pipeline {
         }
     }
 
-    environment {
-        CI_BRANCH = env.BRANCH_NAME
-        CI_AUTHOR = env.CHANGE_AUTHOR
-    }
-
     stages {
         stage('Decrypt secrets') {
             steps {
@@ -23,6 +18,10 @@ pipeline {
         }
 
         stage('Run jet') {
+            environment {
+                CI_BRANCH = env.BRANCH_NAME
+                CI_AUTHOR = env.CHANGE_AUTHOR
+            }
             steps {
                 container('docker') {
                     sh "jet steps"
