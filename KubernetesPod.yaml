@@ -11,7 +11,7 @@ spec:
       runAsUser: 10000
       allowPrivilegeEscalation: false
   - name: docker
-    image: quay.io/lightside/jet:0.1.0
+    image: quay.io/lightside/jet:0.2.3
     tty: true
     securityContext:
       runAsUser: 0
