@@ -4,7 +4,7 @@ pipeline {
     agent {
         kubernetes {
             label 'pipeline-test-build-pod'
-            yamlFile 'KubernetesPod.yaml'  # Would need to set up container environment variables here somehow
+            yamlFile 'KubernetesPod.yaml'
         }
     }
 
