@@ -1,17 +1,18 @@
 apiVersion: v1
 kind: Pod
 spec:
+  securityContext:
+    runAsUser: 1000
   containers:
   - name: jnlp
     image: quay.io/lightside/jenkins-jnlp-agent:0.1.0
-  - name: docker
-    image: docker:stable-dind
-    command: ['cat']
     tty: true
-    volumeMounts:
-    - name: dockersock
-      mountPath: /var/run/docker.sock
-  volumes:
-  - name: dockersock
-    hostPath:
-      path: /var/run/docker.sock
+    securityContext:
+      runAsUser: 10000
+      allowPrivilegeEscalation: false
+  - name: docker
+    image: quay.io/lightside/jet:0.2.3
+    tty: true
+    securityContext:
+      runAsUser: 0
+      privileged: true

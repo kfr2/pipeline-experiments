@@ -17,35 +17,10 @@ pipeline {
             }
         }
 
-        stage('Build Docker image') {
+        stage('Run jet') {
             steps {
                 container('docker') {
-                    sh "docker build -t ${image} ."
-                }
-            }
-        }
-
-        stage('Run tests') {
-            steps {
-                container('docker') {
-                    sh "docker run --rm ${image} /srv/test.sh"
-                }
-            }
-        }
-
-        stage('Push image') {
-            when {
-                branch 'master'
-            }
-            steps {
-                sh "echo Push the image"
-            }
-        }
-
-        stage('Remove image') {
-            steps {
-                container('docker') {
-                    sh "docker rmi ${image}"
+                    sh "/srv/run-jet.sh"
                 }
             }
         }

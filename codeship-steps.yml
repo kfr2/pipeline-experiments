@@ -1,0 +1,8 @@
+- name: test
+  service: app
+  command: /srv/test.sh
+
+- name: welcome
+  tag: run-in-jet
+  service: app
+  command: echo "Welcome to run-in-jet!"
